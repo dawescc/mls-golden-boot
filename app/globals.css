@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	:root {
+		--font-size: 15px;
+		--border-radius: 2.6887px;
+		--background: rgb(255, 255, 255);
+		--foreground: rgb(0, 0, 0);
+		--border: var(--foreground);
+		--primary: rgb(10, 0, 148);
+		--secondary: rgb(255, 200, 54);
+		--accent: rgb(132, 132, 132);
+
+		--layer-0: var(--background);
+		--layer-1: rgb(249, 249, 249);
+		--layer-2: rgb(243, 243, 243);
+		--layer-3: rgb(237, 237, 237);
+		--layer-4: rgb(231, 231, 231);
+		--layer-5: rgb(225, 225, 225);
+	}
+
+	[data-theme="dark"] {
+		--background: rgb(0, 0, 0);
+		--foreground: rgb(255, 255, 255);
+		--accent: rgb(176, 176, 176);
+
+		--layer-1: rgb(19, 19, 19);
+		--layer-2: rgb(38, 38, 38);
+		--layer-3: rgb(57, 57, 57);
+		--layer-4: rgb(76, 76, 76);
+		--layer-5: rgb(95, 95, 95);
+	}
+
+	body {
+		@apply bg-background text-foreground;
+	}
+
+	html {
+		font-size: var(--font-size);
+	}
+}
