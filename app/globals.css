@@ -5,12 +5,12 @@
 @layer base {
 	:root {
 		--font-size: 15px;
-		--border-radius: 2.6887px;
+		--border-radius: 0.9423466667rem;
 		--background: rgb(255, 255, 255);
 		--foreground: rgb(0, 0, 0);
 		--border: var(--foreground);
-		--primary: rgb(10, 0, 148);
-		--secondary: rgb(255, 200, 54);
+		--primary: rgb(224, 35, 26);
+		--secondary: rgb(1, 103, 167);
 		--accent: rgb(132, 132, 132);
 
 		--layer-0: var(--background);

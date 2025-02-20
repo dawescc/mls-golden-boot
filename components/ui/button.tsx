@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/cn";
 
 const Button = ({ className = "", children, text = "", variant = "default", link = "", ...props }: ButtonProps) => {
 	const variantClasses = {

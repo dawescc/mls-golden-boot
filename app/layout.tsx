@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { siteConfig } from "@/config/siteConfig";
-import font from "@/lib/fonts";
+import font from "@/config/fonts";
 import SiteFooter from "@/components/site-footer";
 import { Analytics } from "@vercel/analytics/react";
 import { Theme } from "@/components/ui/theme-provider";
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 		default: siteConfig.title,
 		template: `%s - ${siteConfig.name}`,
 	},
-	metadataBase: new URL(siteConfig.url),
+	metadataBase: new URL(siteConfig.url || "/"),
 	description: siteConfig.description,
 	authors: [
 		{
@@ -63,11 +63,11 @@ export default function RootLayout({
 			lang='en'
 			suppressHydrationWarning
 			className={`${font.sans.variable} ${font.serif.variable} ${font.mono.variable} ${font.display.variable}`}>
-			<body className={`font-sans antialiased px-6`}>
+			<body className={`font-sans antialiased`}>
 				<Theme>
-					<main className='relative max-w-6xl mx-auto border-x-[6px] border-layer-5'>
-						<SiteHeader />
-						<div className=''>{children}</div>
+					<SiteHeader />
+					<main className='relative max-w-6xl mx-auto'>
+						{children}
 						<SiteFooter />
 					</main>
 					<Analytics />
