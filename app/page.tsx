@@ -1,4 +1,5 @@
 import { PlayerCardDrawer } from "@/components/player-card";
+import { LeaderboardDetailsDrawer } from "@/components/teams-leaderboard";
 import fd from "@/utils/fd";
 
 export default async function Page() {
@@ -20,6 +21,9 @@ export default async function Page() {
 
 		return (
 			<div className='px-2'>
+				<div className='mb-10 w-full'>
+					<LeaderboardDetailsDrawer />
+				</div>
 				<h1 className='font-bold text-accent'>Top {data.results} Scorers</h1>
 
 				{data.errors.length > 0 ? (
@@ -30,10 +34,10 @@ export default async function Page() {
 					</div>
 				) : (
 					<div className='mt-4 grid grid-cols-1 gap-6'>
-						{data.response.map((item) => (
+						{data.response.map((player) => (
 							<PlayerCardDrawer
-								key={item.player.id}
-								data={item}
+								key={player.player.id}
+								data={player}
 							/>
 						))}
 					</div>

@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function SiteHeader() {
 	const season = process.env.NEXT_PUBLIC_SEASON || "2024";
 	return (
-		<header className='px-1 my-2 mb-20 pt-2 grid grid-cols-1'>
+		<header className='mb-10 grid grid-cols-1'>
 			<Link
 				href='/'
 				className='flex gap-2 items-end px-2 pt-3 pb-2'>

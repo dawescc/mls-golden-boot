@@ -6,17 +6,19 @@ import { Drawer, Handle } from "vaul";
 
 const PlayerCardDrawer = ({ data }: PlayerCardProps<PlayersResponse>) => {
 	return (
-		<Drawer.Root>
+		<Drawer.Root
+			shouldScaleBackground
+			noBodyStyles>
 			<Drawer.Trigger className=''>
 				<PlayerCardSmall data={data} />
 			</Drawer.Trigger>
 			<Drawer.Portal>
-				<Drawer.Overlay className='fixed inset-0 bg-black/40' />
-				<Drawer.Content className='bg-layer-1 flex flex-col rounded-t-[10px] mt-24 h-fit fixed bottom-0 left-0 right-0 outline-none'>
+				<Drawer.Overlay className='fixed inset-0 bg-black/40 backdrop-blur-[0.05rem]' />
+				<Drawer.Content className='bg-layer-0 flex flex-col rounded-t mt-24 h-fit fixed bottom-0 left-0 right-0 outline-none'>
 					<div className='p-4 flex-1'>
 						<Handle />
 					</div>
-					<div className=''>
+					<div className='pb-4 px-2'>
 						<Drawer.Title className='hidden'>Player Details</Drawer.Title>
 						<PlayerCard data={data} />
 					</div>
@@ -28,22 +30,18 @@ const PlayerCardDrawer = ({ data }: PlayerCardProps<PlayersResponse>) => {
 };
 
 const PlayerCardSmall = ({ data }: PlayerCardProps<PlayersResponse>) => {
-	if (!data) {
-		return <div>Uh-oh!</div>;
-	}
-
 	return (
-		<div className='bg-layer-1 rounded overflow-clip relative'>
+		<div className='bg-layer-1 rounded overflow-clip relative shadow-sm border border-layer-5/50'>
 			<div className='flex px-3 pb-3 pt-3'>
 				<Image
 					src={data.player.photo}
 					alt={"MLS Logo"}
 					width={100}
 					height={100}
-					className='size-10 aspect-square rounded mr-4'
+					className='size-10 aspect-square rounded mr-4 border border-layer-5/80'
 				/>
 				<h2 className='font-semibold text-4xl'>{data.player.name}</h2>
-				<p className='font-mono font-black tabular-nums text-accent text-xl'>{calculateTotalGoals(data.statistics)}</p>
+				<p className='font-mono font-black tabular-nums text-accent text-xl rounded-underline'>{calculateTotalGoals(data.statistics)}</p>
 			</div>
 		</div>
 	);
@@ -51,7 +49,7 @@ const PlayerCardSmall = ({ data }: PlayerCardProps<PlayersResponse>) => {
 
 const PlayerCard = ({ data }: PlayerCardProps<PlayersResponse>) => {
 	return (
-		<div className='bg-layer-1 p-4 rounded'>
+		<div className='bg-layer-0 p-4 rounded '>
 			{/* Player Profile Section */}
 			<div className='flex items-center gap-4 mb-4'>
 				<Image

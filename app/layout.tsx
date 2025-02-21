@@ -63,14 +63,18 @@ export default function RootLayout({
 			lang='en'
 			suppressHydrationWarning
 			className={`${font.sans.variable} ${font.serif.variable} ${font.mono.variable} ${font.display.variable}`}>
-			<body className={`font-sans antialiased`}>
+			<body className={`font-sans antialiased bg-layer-5`}>
 				<Theme>
-					<SiteHeader />
-					<main className='relative max-w-6xl mx-auto'>
-						{children}
-						<SiteFooter />
-					</main>
-					<Analytics />
+					<div
+						data-vaul-drawer-wrapper=''
+						className='bg-layer-0'>
+						<SiteHeader />
+						<main className='relative max-w-6xl mx-auto'>
+							{children}
+							<SiteFooter />
+						</main>
+						<Analytics />
+					</div>
 				</Theme>
 			</body>
 		</html>

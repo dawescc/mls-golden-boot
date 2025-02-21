@@ -183,15 +183,20 @@ interface PlayerPenalty {
 	saved: number | null;
 }
 
-interface PlayerFeedProps {
-	initialData: ApiResponse<TopScorersResponse>;
-	season: string;
-	apiKey: string;
-	apiHost: string;
-}
-
 interface PlayerCardProps<T> {
 	data: T;
+}
+
+interface TeamScore {
+	owner: string;
+	totalGoals: number;
+	players: PlayersResponse[];
+}
+
+interface LeaderboardProps {
+	teamScores: TeamScore[];
+	isLoading: boolean;
+	error: Error | null;
 }
 
 interface ButtonProps {

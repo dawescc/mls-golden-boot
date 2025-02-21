@@ -40,4 +40,13 @@
 	html {
 		font-size: var(--font-size);
 	}
+
+	.rounded-underline::after {
+		content: "";
+		height: 0.15rem;
+		margin-top: -0.1em;
+		background: currentColor;
+		border-radius: 0.5rem;
+		display: block;
+	}
 }
