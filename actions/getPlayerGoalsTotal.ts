@@ -4,39 +4,54 @@ import Teams from "@/lib/draftedTeams";
 import { calculateTotalGoals } from "@/lib/fn";
 import fd from "@/utils/fd";
 
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+async function fetchPlayerData(playerId: number, season: string) {
+	await delay(1000);
+	return await fd<ApiResponse<PlayersResponse>>({
+		url: `${process.env.NEXT_PUBLIC_API_URL}/players`,
+		headers: {
+			"x-rapidapi-key": process.env.X_RAPIDAPI_KEY || "",
+			"x-rapidapi-host": process.env.X_RAPIDAPI_HOST || "",
+		},
+		params: {
+			id: playerId.toString(),
+			season: season,
+			league: "253",
+		},
+		tag: "player-stats",
+		cacheTime: 10800,
+	});
+}
+
 export async function getPlayerGoalsTotal() {
-	const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 	const season = process.env.NEXT_PUBLIC_SEASON || "2024";
 	const scores: Record<string, TeamScore> = {};
 
 	try {
-		for (const [owner, team] of Object.entries(Teams)) {
-			scores[owner] = { owner, totalGoals: 0, players: [] };
+		await Promise.all(
+			Object.entries(Teams).map(async ([owner, team]) => {
+				scores[owner] = { owner, totalGoals: 0, players: [] };
 
-			for (const player of team.players) {
-				await delay(1000);
+				const chunkSize = 3;
+				for (let i = 0; i < team.players.length; i += chunkSize) {
+					const chunk = team.players.slice(i, i + chunkSize);
 
-				const data = await fd<ApiResponse<PlayersResponse>>({
-					url: `${process.env.NEXT_PUBLIC_API_URL}/players`,
-					headers: {
-						"x-rapidapi-key": process.env.X_RAPIDAPI_KEY || "",
-						"x-rapidapi-host": process.env.X_RAPIDAPI_HOST || "",
-					},
-					params: {
-						id: player.id.toString(),
-						season: season,
-						league: "253",
-					},
-					tag: "player-stats",
-					cacheTime: 10800,
-				});
+					const chunkResults = await Promise.all(chunk.map((player) => fetchPlayerData(player.id, season)));
 
-				if (data?.response?.[0]) {
-					scores[owner].players.push(data.response[0]);
-					scores[owner].totalGoals += calculateTotalGoals(data.response[0].statistics);
+					chunkResults.forEach((data) => {
+						if (data?.response?.[0]) {
+							scores[owner].players.push(data.response[0]);
+							scores[owner].totalGoals += calculateTotalGoals(data.response[0].statistics);
+						}
+					});
+
+					if (i + chunkSize < team.players.length) {
+						await delay(1000);
+					}
 				}
-			}
-		}
+			})
+		);
 
 		return Object.values(scores).sort((a, b) => b.totalGoals - a.totalGoals);
 	} catch (error) {
