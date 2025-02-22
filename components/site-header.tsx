@@ -9,7 +9,7 @@ export default function SiteHeader() {
 				href='/'
 				className='flex gap-2 items-end p-3'>
 				<h1 className='font-display font-semibold tracking-tight text-5xl md:text-6xl'>
-					MLS GOLDEN
+					GOLDEN
 					<br className='' /> BOOT <span className='font-mono'>{season}</span>
 				</h1>
 			</Link>
