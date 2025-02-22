@@ -43,8 +43,8 @@ const LeaderboardDetailsDrawer = () => {
 				/>
 			</Drawer.Trigger>
 			<Drawer.Portal>
-				<Drawer.Overlay className='fixed inset-0 bg-black/40 backdrop-blur-[0.05rem]' />
-				<Drawer.Content className='bg-layer-0 flex flex-col rounded-t mt-24 h-[80vh] fixed bottom-0 left-0 right-0 outline-none'>
+				<Drawer.Overlay className='fixed inset-0 bg-black/80 backdrop-blur-[0.05rem]' />
+				<Drawer.Content className='bg-layer-0 border-t border-layer-5/30 flex flex-col rounded-t mt-24 h-[80vh] fixed bottom-0 left-0 right-0 outline-none'>
 					<div className='p-4'>
 						<Handle />
 					</div>
@@ -185,7 +185,7 @@ const LeaderboardDetails = ({ teamScores, isLoading, error }: LeaderboardProps) 
 			{teamScores.map((team) => (
 				<div
 					key={team.owner}
-					className='bg-layer-1 rounded p-4'>
+					className='bg-layer-1 rounded p-4 border-layer-5/50'>
 					<div className='flex justify-between items-center mb-4'>
 						<h2 className='text-xl font-bold'>{team.owner}</h2>
 						<span className='text-2xl font-mono text-accent'>{team.totalGoals}</span>
@@ -195,6 +195,8 @@ const LeaderboardDetails = ({ teamScores, isLoading, error }: LeaderboardProps) 
 							<PlayerCardDrawer
 								key={player.player.id}
 								data={player}
+								smallCardClasses='bg-layer-1'
+								isNested
 							/>
 						))}
 					</div>

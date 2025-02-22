@@ -6,8 +6,8 @@ export default function SiteHeader() {
 		<header className='mb-10 grid grid-cols-1'>
 			<Link
 				href='/'
-				className='flex gap-2 items-end px-2 pt-3 pb-2'>
-				<h1 className='font-display font-semibold tracking-tight text-4xl md:text-3xl'>
+				className='flex gap-2 items-end p-3 mb-10'>
+				<h1 className='font-display font-semibold tracking-tight text-5xl md:text-6xl'>
 					MLS GOLDEN BOOT <span className='font-mono'>{season}</span>
 				</h1>
 			</Link>

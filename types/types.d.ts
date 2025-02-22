@@ -185,6 +185,13 @@ interface PlayerPenalty {
 
 interface PlayerCardProps<T> {
 	data: T;
+	className?: string;
+}
+
+interface PlayerDrawerProps<T> {
+	data: T;
+	smallCardClasses?: string;
+	isNested?: boolean;
 }
 
 interface TeamScore {
