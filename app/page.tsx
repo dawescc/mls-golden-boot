@@ -17,16 +17,17 @@ export default async function Page() {
 				season: season,
 			},
 			tag: "top-scorers",
-			cacheTime: 3600,
+			cacheTime: 1800,
 		});
 
 		return (
 			<div className='px-2 h-full min-h-full'>
-				<div className='mb-10 w-full'>
+				<h1 className='text-xl font-medium text-accent'>Leaderboard</h1>
+				<div className='mb-10 w-full mt-4'>
 					<LeaderboardDetailsDrawer />
 				</div>
 
-				<h1 className='font-bold text-accent'>Top Scorers ({data.results || 0})</h1>
+				<h1 className='text-xl font-medium text-accent'>Top Scorers ({data.results || 0})</h1>
 
 				{data.errors.length > 0 ? (
 					<ErrorState errors={data.errors} />
@@ -38,12 +39,7 @@ export default async function Page() {
 			</div>
 		);
 	} catch (error) {
-		return (
-			<div className='p-4'>
-				<h1 className='text-2xl font-bold mb-4'>Top Scorers</h1>
-				<div className='text-red-500'>Error loading top scorers: {error instanceof Error ? error.message : "Unknown error"}</div>
-			</div>
-		);
+		throw error;
 	}
 }
 
@@ -83,7 +79,7 @@ const NoTopScorersState = () => {
 							alt={"GK"}
 							width={340}
 							height={280}
-							className='size-64 mx-auto'
+							className='size-56 mx-auto my-12 grayscale relative'
 						/>
 						<span className='mt-3'>
 							<p>No player goals have been recorded yet.</p>

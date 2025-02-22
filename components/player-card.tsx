@@ -36,13 +36,24 @@ const PlayerCardSmall = ({ data, className = "" }: PlayerCardProps<PlayersRespon
 	return (
 		<div className={cn(`bg-layer-0 rounded overflow-clip relative shadow-sm border border-layer-5/50`, className)}>
 			<div className='flex px-3 pb-3 pt-3'>
-				<Image
-					src={data.player.photo}
-					alt={"MLS Logo"}
-					width={150}
-					height={150}
-					className='size-10 aspect-square rounded mr-4 border border-layer-5/80'
-				/>
+				<div className='relative'>
+					<Image
+						src={data.player.id === 2295 ? "/img/newdog.png" : data.player.photo}
+						alt={`${data.player.name} Image`}
+						width={150}
+						height={150}
+						className='size-10 aspect-square rounded mr-4 border border-layer-5/80'
+					/>
+					{data.statistics[0].team.logo && (
+						<Image
+							src={data.statistics[0].team.logo}
+							alt={`${data.statistics[0].team.name} Logo`}
+							width={24}
+							height={24}
+							className='right-0 bottom-0 -translate-y-4 translate-x-6 size-6'
+						/>
+					)}
+				</div>
 				<h2 className='font-semibold text-4xl text-start'>{data.player.name}</h2>
 				<p className='font-mono font-black tabular-nums text-accent text-2xl rounded-underline ml-auto'>{calculateTotalGoals(data.statistics)}</p>
 			</div>

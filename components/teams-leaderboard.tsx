@@ -159,8 +159,8 @@ const Leaderboard = ({ teamScores, isLoading, error }: LeaderboardProps) => {
 
 	return (
 		<div className='flex w-full flex-col overflow-hidden shadow-sm border border-layer-5/70 bg-layer-0 rounded'>
-			<div className='flex flex-grow flex-row items-center justify-between p-3 bg-layer-2 border-b border-layer-5/40'>
-				<p className='text-xl font-medium'>Leaderboard</p>
+			<div className='flex flex-grow flex-row items-center justify-between p-2 px-4 bg-layer-2 border-b border-layer-5/40'>
+				<p className='text-lg font-medium text-accent'>Owner</p>
 				<div className='p-1 border border-layer-5/80 rounded-full bg-layer-3'>
 					<CgDetailsMore className='size-6 text-accent' />
 				</div>

@@ -21,7 +21,7 @@ async function fetchPlayerData(playerId: number, season: string) {
 			league: "253",
 		},
 		tag: "player-stats",
-		cacheTime: 10800,
+		cacheTime: 1800,
 	});
 }
 
@@ -48,7 +48,7 @@ export const getPlayerGoalsTotal = cache(async () => {
 					});
 
 					if (i + chunkSize < team.players.length) {
-						await delay(1000);
+						await delay(1);
 					}
 				}
 			})

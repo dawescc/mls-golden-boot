@@ -7,7 +7,7 @@ export default function SiteHeader() {
 		<header className='mb-20 grid grid-cols-1'>
 			<Link
 				href='/'
-				className='flex gap-2 items-end p-3'>
+				className='flex gap-2 items-end p-3 w-fit'>
 				<div className='aspect-square h-full my-auto size-16 md:size-20 overflow-clip'>
 					<Hero imageId={"mls"} />
 				</div>
