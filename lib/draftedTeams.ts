@@ -8,7 +8,7 @@ const Teams: AllDraftedTeams = {
 	},
 
 	Spencer: {
-		players: [{ id: 154 }, { id: 2295 }, { id: 41450 }, { id: 14405 }, { id: 362774 }, { id: 3247 }, { id: 1 /* needs to update when api updates */ }],
+		players: [{ id: 154 }, { id: 2295 }, { id: 41450 }, { id: 14405 }, { id: 362774 }, { id: 3247 }, { id: 321839 }],
 	},
 
 	Walker: {
