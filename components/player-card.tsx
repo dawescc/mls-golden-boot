@@ -6,9 +6,7 @@ import { Drawer, Handle } from "vaul";
 
 const PlayerCardDrawer = ({ data }: PlayerCardProps<PlayersResponse>) => {
 	return (
-		<Drawer.Root
-			shouldScaleBackground
-			noBodyStyles>
+		<Drawer.NestedRoot>
 			<Drawer.Trigger className=''>
 				<PlayerCardSmall data={data} />
 			</Drawer.Trigger>
@@ -24,7 +22,7 @@ const PlayerCardDrawer = ({ data }: PlayerCardProps<PlayersResponse>) => {
 					</div>
 				</Drawer.Content>
 			</Drawer.Portal>
-		</Drawer.Root>
+		</Drawer.NestedRoot>
 	);
 	return;
 };
@@ -49,7 +47,7 @@ const PlayerCardSmall = ({ data }: PlayerCardProps<PlayersResponse>) => {
 
 const PlayerCard = ({ data }: PlayerCardProps<PlayersResponse>) => {
 	return (
-		<div className='bg-layer-0 p-4 rounded '>
+		<div className='bg-layer-1 p-4 rounded '>
 			{/* Player Profile Section */}
 			<div className='flex items-center gap-4 mb-4'>
 				<Image

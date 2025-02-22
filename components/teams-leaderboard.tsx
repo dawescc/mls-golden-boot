@@ -2,7 +2,7 @@
 
 import { HiPlus } from "react-icons/hi";
 import { Drawer, Handle } from "vaul";
-import { PlayerCardSmall } from "@/components/player-card";
+import { PlayerCardDrawer } from "@/components/player-card";
 import { getPlayerGoalsTotal } from "@/actions/getPlayerGoalsTotal";
 import { useState, useEffect } from "react";
 
@@ -34,9 +34,7 @@ const LeaderboardDetailsDrawer = () => {
 	const { teamScores, isLoading, error } = useTeamScores();
 
 	return (
-		<Drawer.Root
-			shouldScaleBackground
-			noBodyStyles>
+		<Drawer.Root>
 			<Drawer.Trigger className='w-full'>
 				<Leaderboard
 					teamScores={teamScores}
@@ -194,7 +192,7 @@ const LeaderboardDetails = ({ teamScores, isLoading, error }: LeaderboardProps) 
 					</div>
 					<div className='grid gap-3'>
 						{team.players.map((player) => (
-							<PlayerCardSmall
+							<PlayerCardDrawer
 								key={player.player.id}
 								data={player}
 							/>

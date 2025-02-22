@@ -3,6 +3,7 @@
 import Teams from "@/lib/draftedTeams";
 import { calculateTotalGoals } from "@/lib/fn";
 import fd from "@/utils/fd";
+import { cache } from "react";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -24,7 +25,7 @@ async function fetchPlayerData(playerId: number, season: string) {
 	});
 }
 
-export async function getPlayerGoalsTotal() {
+export const getPlayerGoalsTotal = cache(async () => {
 	const season = process.env.NEXT_PUBLIC_SEASON || "2024";
 	const scores: Record<string, TeamScore> = {};
 
@@ -57,4 +58,4 @@ export async function getPlayerGoalsTotal() {
 	} catch (error) {
 		throw error;
 	}
-}
+});

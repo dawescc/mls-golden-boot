@@ -66,10 +66,10 @@ export default function RootLayout({
 			<body className={`font-sans antialiased bg-layer-5`}>
 				<Theme>
 					<div
-						data-vaul-drawer-wrapper=''
-						className='bg-layer-0'>
+						className='bg-layer-0'
+						data-vaul-drawer-wrapper=''>
 						<SiteHeader />
-						<main className='relative max-w-6xl mx-auto'>
+						<main className='max-w-6xl mx-auto'>
 							{children}
 							<SiteFooter />
 						</main>
