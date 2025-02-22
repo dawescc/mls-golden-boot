@@ -9,7 +9,7 @@ const PlayerCardDrawer = ({ data, smallCardClasses = "", isNested = false }: Pla
 	const DrawerComponent = isNested ? Drawer.NestedRoot : Drawer.Root;
 	return (
 		<DrawerComponent>
-			<Drawer.Trigger className=''>
+			<Drawer.Trigger>
 				<PlayerCardSmall
 					className={smallCardClasses}
 					data={data}
@@ -34,7 +34,7 @@ const PlayerCardDrawer = ({ data, smallCardClasses = "", isNested = false }: Pla
 
 const PlayerCardSmall = ({ data, className = "" }: PlayerCardProps<PlayersResponse>) => {
 	return (
-		<div className={cn(`bg-layer-1 rounded overflow-clip relative shadow-sm border border-layer-5/50`, className)}>
+		<div className={cn(`bg-layer-0 rounded overflow-clip relative shadow-sm border border-layer-5/50`, className)}>
 			<div className='flex px-3 pb-3 pt-3'>
 				<Image
 					src={data.player.photo}

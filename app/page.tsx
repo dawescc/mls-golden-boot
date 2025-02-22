@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { PlayerCardDrawer } from "@/components/player-card";
 import { LeaderboardDetailsDrawer } from "@/components/teams-leaderboard";
 import fd from "@/utils/fd";
@@ -20,7 +21,7 @@ export default async function Page() {
 		});
 
 		return (
-			<div className='px-2'>
+			<div className='px-2 h-full min-h-full'>
 				<div className='mb-10 w-full'>
 					<LeaderboardDetailsDrawer />
 				</div>
@@ -32,14 +33,32 @@ export default async function Page() {
 							<p key={index}>{error.message}</p>
 						))}
 					</div>
-				) : (
-					<div className='mt-4 grid grid-cols-1 gap-6'>
+				) : data.response.length > 0 ? (
+					<div className='mt-4 grid grid-cols-1 gap-3'>
 						{data.response.map((player) => (
 							<PlayerCardDrawer
 								key={player.player.id}
 								data={player}
 							/>
 						))}
+					</div>
+				) : (
+					<div className='min-h-64 pt-10'>
+						<div className='grid grid-cols-1 gap-5 w-full'>
+							<div className='text-center text-sm text-accent'>
+								<Image
+									src={"/img/gk.svg"}
+									alt={"GK"}
+									width={340}
+									height={280}
+									className='size-64 mx-auto'
+								/>
+								<span className='mt-3'>
+									<p>No player goals have been recorded yet.</p>
+									<p>Date may lag behind real-time statistics.</p>
+								</span>
+							</div>
+						</div>
 					</div>
 				)}
 			</div>

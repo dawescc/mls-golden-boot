@@ -1,6 +1,6 @@
 "use client";
 
-import { HiPlus } from "react-icons/hi";
+import { CgDetailsMore } from "react-icons/cg";
 import { Drawer, Handle } from "vaul";
 import { PlayerCardDrawer } from "@/components/player-card";
 import { getPlayerGoalsTotal } from "@/actions/getPlayerGoalsTotal";
@@ -65,42 +65,50 @@ const LeaderboardDetailsDrawer = () => {
 const teamLoadingPlaceholder: TeamScore[] = [
 	{
 		owner: "Team1OwnerName",
-		totalGoals: 0,
+		totalGoals: 2024,
 		players: [],
 	},
 	{
 		owner: "Team2OwnerName",
-		totalGoals: 0,
+		totalGoals: 2024,
 		players: [],
 	},
 	{
 		owner: "Team3OwnerName",
-		totalGoals: 0,
+		totalGoals: 2024,
 		players: [],
 	},
 	{
 		owner: "Team4OwnerName",
-		totalGoals: 0,
+		totalGoals: 2024,
 		players: [],
 	},
 ];
 
 const LeaderboardLoading = () => {
 	return (
-		<div className='flex w-full flex-col overflow-hidden shadow-sm border border-layer-5/70 bg-layer-1 rounded'>
+		<div className='flex w-full flex-col overflow-hidden shadow-sm border border-layer-5/70 bg-layer-0 rounded'>
 			<div className='flex flex-grow flex-row items-center justify-between p-3 bg-layer-2'>
 				<p className='text-xl font-medium'>Leaderboard</p>
 				<div className='p-1 border border-layer-5/80 rounded-full bg-layer-3'>
-					<HiPlus className='size-6' />
+					<CgDetailsMore className='size-6 text-accent' />
 				</div>
 			</div>
-			<div className='flex flex-col gap-2 p-2 [text-align:left]'>
+			<div className='flex flex-col p-2 [text-align:left] divide-y divide-layer-5/40'>
 				{teamLoadingPlaceholder.map((team) => (
 					<div
 						key={team.owner}
-						className='flex justify-between items-center p-2'>
-						<span className='animate-pulse rounded aria-hidden text-transparent bg-layer-5'>{team.owner}</span>
-						<span className='font-mono text-accent animate-pulse rounded aria-hidden text-transparent bg-layer-5'>000</span>
+						className='flex justify-between items-center p-2 py-3'>
+						<span
+							className='font-medium text-lg bg-layer-5 animate-pulse text-transparent rounded'
+							aria-hidden>
+							{team.owner}
+						</span>
+						<span
+							className='font-mono text-accent text-lg bg-layer-5 animate-pulse text-transparent rounded'
+							aria-hidden>
+							{team.totalGoals}
+						</span>
 					</div>
 				))}
 			</div>
@@ -127,8 +135,8 @@ const LeaderboardDetailsLoading = () => {
 								<div className='flex px-3 pb-3 pt-3'>
 									<div className='size-10 aspect-square rounded mr-4 border border-layer-5/80 animate-pulse bg-layer-5' />
 									<div className='flex gap-2 flex-1'>
-										<div className='h-10 w-36 animate-pulse rounded bg-layer-5' />
-										<div className='h-6 w-10 mb-2 animate-pulse rounded bg-layer-5' />
+										<div className='h-12 w-36 animate-pulse rounded bg-layer-5' />
+										<div className='ml-auto h-12 w-10 mb-2 animate-pulse rounded bg-layer-5' />
 									</div>
 								</div>
 							</div>
@@ -150,20 +158,20 @@ const Leaderboard = ({ teamScores, isLoading, error }: LeaderboardProps) => {
 	}
 
 	return (
-		<div className='flex w-full flex-col overflow-hidden shadow-sm border border-layer-5/70 bg-layer-1 rounded'>
-			<div className='flex flex-grow flex-row items-center justify-between p-3 bg-layer-2'>
+		<div className='flex w-full flex-col overflow-hidden shadow-sm border border-layer-5/70 bg-layer-0 rounded'>
+			<div className='flex flex-grow flex-row items-center justify-between p-3 bg-layer-2 border-b border-layer-5/40'>
 				<p className='text-xl font-medium'>Leaderboard</p>
 				<div className='p-1 border border-layer-5/80 rounded-full bg-layer-3'>
-					<HiPlus className='size-6' />
+					<CgDetailsMore className='size-6 text-accent' />
 				</div>
 			</div>
-			<div className='flex flex-col gap-2 p-2 [text-align:left]'>
+			<div className='flex flex-col p-2 [text-align:left] divide-y divide-layer-5/40'>
 				{teamScores.map((team) => (
 					<div
 						key={team.owner}
-						className='flex justify-between items-center p-2'>
-						<span>{team.owner}</span>
-						<span className='font-mono text-accent'>{team.totalGoals}</span>
+						className='flex justify-between items-center p-2 py-3'>
+						<span className='font-medium text-lg'>{team.owner}</span>
+						<span className='font-mono text-accent text-lg'>{team.totalGoals}</span>
 					</div>
 				))}
 			</div>
@@ -181,21 +189,20 @@ const LeaderboardDetails = ({ teamScores, isLoading, error }: LeaderboardProps) 
 	}
 
 	return (
-		<div className='flex flex-col gap-6'>
+		<div className='flex flex-col gap-6 pb-10'>
 			{teamScores.map((team) => (
 				<div
 					key={team.owner}
 					className='bg-layer-1 rounded p-4 border-layer-5/50'>
-					<div className='flex justify-between items-center mb-4'>
-						<h2 className='text-xl font-bold'>{team.owner}</h2>
-						<span className='text-2xl font-mono text-accent'>{team.totalGoals}</span>
+					<div className='flex justify-between items-center mb-4 text-2xl font-bold'>
+						<h2>{team.owner}</h2>
+						<span className='font-mono text-accent'>{team.totalGoals}</span>
 					</div>
 					<div className='grid gap-3'>
 						{team.players.map((player) => (
 							<PlayerCardDrawer
 								key={player.player.id}
 								data={player}
-								smallCardClasses='bg-layer-1'
 								isNested
 							/>
 						))}
