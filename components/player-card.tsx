@@ -50,7 +50,7 @@ const PlayerCardSmall = ({ data, className = "" }: PlayerCardProps<PlayersRespon
 							alt={`${data.statistics[0].team.name} Logo`}
 							width={24}
 							height={24}
-							className='right-0 bottom-0 -translate-y-4 translate-x-6 size-6'
+							className='absolute right-0 bottom-0 -translate-x-[0.277rem] translate-y-[0.277rem] size-6'
 						/>
 					)}
 				</div>

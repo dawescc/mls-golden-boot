@@ -88,7 +88,7 @@ const teamLoadingPlaceholder: TeamScore[] = [
 const LeaderboardLoading = () => {
 	return (
 		<div className='flex w-full flex-col overflow-hidden shadow-sm border border-layer-5/70 bg-layer-0 rounded'>
-			<div className='flex flex-grow flex-row items-center justify-between p-3 bg-layer-2'>
+			<div className='flex flex-grow flex-row items-center justify-between p-2 px-4 bg-layer-2'>
 				<p className='text-lg font-medium text-accent'>Owner</p>
 				<div className='p-1 border border-layer-5/80 rounded-full bg-layer-3'>
 					<CgDetailsMore className='size-6 text-accent' />
