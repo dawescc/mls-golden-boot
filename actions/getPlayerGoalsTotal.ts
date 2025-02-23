@@ -2,6 +2,7 @@
 
 import Teams from "@/lib/draftedTeams";
 import { calculateTotalGoals } from "@/lib/fn";
+import { ApiResponse, PlayersResponse, TeamScore } from "@/types";
 import fd from "@/utils/fd";
 import { cache } from "react";
 

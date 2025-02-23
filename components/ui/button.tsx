@@ -1,3 +1,4 @@
+import { ButtonProps } from "@/types";
 import { cn } from "@/utils/cn";
 
 const Button = ({ className = "", children, text = "", variant = "default", link = "", ...props }: ButtonProps) => {

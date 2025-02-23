@@ -1,3 +1,4 @@
+import { ParamsProps, ClientFetchProps } from "@/types";
 import useSWR from "swr";
 
 const fetcher = async ([url, headers, params, page]: [string, HeadersInit | undefined, ParamsProps | undefined, number | undefined]) => {

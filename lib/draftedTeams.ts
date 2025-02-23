@@ -1,3 +1,5 @@
+import { AllDraftedTeams } from "@/types";
+
 const Teams: AllDraftedTeams = {
 	Drub: {
 		players: [{ id: 21437 }, { id: 21036 }, { id: 66055 }, { id: 50969 }, { id: 51118 }, { id: 7106 }, { id: 407652 }],

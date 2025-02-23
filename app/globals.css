@@ -49,4 +49,8 @@
 		border-radius: 0.5rem;
 		display: block;
 	}
+
+	.layer-1-container {
+		@apply bg-gradient-to-t from-layer-0 to-layer-1 rounded relative shadow-sm border border-layer-5/50;
+	}
 }

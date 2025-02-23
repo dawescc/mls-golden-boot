@@ -1,3 +1,5 @@
+import { serverFetchProps } from "@/types";
+
 const fd = async <T>({ cacheTime = 3600, tag = "", url, headers, params, page }: serverFetchProps): Promise<T> => {
 	"use server";
 	try {
