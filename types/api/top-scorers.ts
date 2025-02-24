@@ -1,4 +1,4 @@
-import { Player, PlayerStatistics } from "@/types/api/player";
+import { Player, PlayerStatistics } from "@/types";
 
 export type TopScorersResponse = {
 	player: Player;

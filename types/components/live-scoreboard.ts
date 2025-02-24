@@ -1,4 +1,4 @@
-import { LiveScoresResponse } from "@/types/api/live-scores";
+import { LiveScoresResponse } from "@/types";
 
 export interface LiveScoreCardProps {
 	data: LiveScoresResponse;

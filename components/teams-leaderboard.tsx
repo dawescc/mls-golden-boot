@@ -3,7 +3,7 @@
 import { CgDetailsMore } from "react-icons/cg";
 import { Drawer, Handle } from "vaul";
 import { PlayerCardDrawer } from "@/components/player-card";
-import { getPlayerGoalsTotal } from "@/actions/getPlayerGoalsTotal";
+import { getSortedAllTeamsGoalsTotals } from "@/actions/getSortedAllTeamsGoalsTotals";
 import { useState, useEffect } from "react";
 import { TeamScore, LeaderboardProps } from "@/types";
 
@@ -16,7 +16,7 @@ const useTeamScores = () => {
 		const fetchScores = async () => {
 			try {
 				setIsLoading(true);
-				const scores = await getPlayerGoalsTotal();
+				const scores = await getSortedAllTeamsGoalsTotals();
 				setTeamScores(scores);
 			} catch (err) {
 				setError(err instanceof Error ? err : new Error("Failed to fetch players"));
@@ -92,7 +92,7 @@ const LeaderboardLoading = () => {
 		<div className='flex w-full flex-col overflow-hidden shadow-sm border border-layer-5/70 bg-layer-0 rounded'>
 			<div className='flex flex-grow flex-row items-center justify-between p-2 px-4 bg-layer-2'>
 				<p className='text-lg font-medium text-accent'>Team</p>
-				<div className='p-1 border border-layer-5/80 rounded-full bg-layer-3'>
+				<div className='p-1 layer-1-container rounded-full'>
 					<CgDetailsMore className='size-6 text-accent' />
 				</div>
 			</div>
@@ -163,7 +163,7 @@ const Leaderboard = ({ teamScores, isLoading, error }: LeaderboardProps) => {
 		<div className='flex w-full flex-col overflow-hidden shadow-sm layer-1-container'>
 			<div className='flex flex-grow flex-row items-center justify-between p-2 px-4 bg-layer-1 border-b border-layer-5/40'>
 				<p className='text-lg font-medium text-accent'>Team</p>
-				<div className='p-1 border border-layer-5/80 rounded-full bg-layer-3'>
+				<div className='p-1 layer-1-container rounded-full'>
 					<CgDetailsMore className='size-6 text-accent' />
 				</div>
 			</div>

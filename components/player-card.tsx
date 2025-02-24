@@ -86,12 +86,15 @@ const PlayerCard = ({ data }: PlayerCardProps<PlayersResponse>) => {
 				</div>
 			</div>
 
-			{data.statistics.map((teamStats, index) => (
-				<div
-					key={`${teamStats.team.id}-${index}`}
-					className='mt-4'>
-					{/* Team Header */}
-					{(teamStats.goals.total || teamStats.games.minutes) && (
+			{data.statistics.map((teamStats, index) => {
+				if (!teamStats.goals.total && !teamStats.games.minutes) {
+					return null;
+				}
+
+				return (
+					<div
+						key={`${teamStats.team.id}-${index}`}
+						className='mt-4'>
 						<div className='flex items-center gap-2 mb-3'>
 							<Image
 								src={teamStats.team.logo}
@@ -101,9 +104,7 @@ const PlayerCard = ({ data }: PlayerCardProps<PlayersResponse>) => {
 							/>
 							<p className='text-accent'>{teamStats.team.name}</p>
 						</div>
-					)}
 
-					{teamStats.goals.total && (
 						<div className='grid grid-cols-2 gap-1.5'>
 							<div className='layer-1-container p-3'>
 								<p className='text-xs font-medium text-accent'>Goals</p>
@@ -122,9 +123,7 @@ const PlayerCard = ({ data }: PlayerCardProps<PlayersResponse>) => {
 								<p className='text-2xl font-bold'>{Number(teamStats.games.rating).toFixed(1)}</p>
 							</div>
 						</div>
-					)}
 
-					{teamStats.games.minutes && (
 						<div className='mt-4 px-2 grid grid-cols-1 gap-1.5'>
 							<div className='flex justify-between items-center py-0.5 border-b border-layer-5/40'>
 								<span className='text-xs font-medium text-accent'>Minutes played</span>
@@ -132,16 +131,20 @@ const PlayerCard = ({ data }: PlayerCardProps<PlayersResponse>) => {
 							</div>
 							<div className='flex justify-between items-center py-0.5 border-b border-layer-5/40'>
 								<span className='text-xs font-medium text-accent'>Shot accuracy</span>
-								<span className='font-bold'>{Math.round((teamStats.shots.on / teamStats.shots.total) * 100)}%</span>
+								<span className='font-bold'>
+									{teamStats.shots.total > 0 && teamStats.shots.on !== undefined
+										? `${Math.round((teamStats.shots.on / teamStats.shots.total) * 100)}%`
+										: "N/A"}
+								</span>
 							</div>
 							<div className='flex justify-between items-center py-0.5'>
 								<span className='text-xs font-medium text-accent'>Pass accuracy</span>
 								<span className='font-bold'>{teamStats.passes.accuracy ? `${teamStats.passes.accuracy}%` : "N/A"}</span>
 							</div>
 						</div>
-					)}
-				</div>
-			))}
+					</div>
+				);
+			})}
 		</div>
 	);
 };

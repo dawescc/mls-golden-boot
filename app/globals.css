@@ -53,4 +53,85 @@
 	.layer-1-container {
 		@apply bg-gradient-to-t from-layer-0 to-layer-1 rounded relative shadow-sm border border-layer-5/50;
 	}
+
+	@keyframes gradient-pulse {
+		0% {
+			opacity: 0.226;
+		}
+		15% {
+			opacity: 0.326;
+		}
+		30% {
+			opacity: 0.626;
+		}
+		45% {
+			opacity: 0.726;
+		}
+		60% {
+			opacity: 0.626;
+		}
+		75% {
+			opacity: 0.426;
+		}
+		85% {
+			opacity: 0.326;
+		}
+		100% {
+			opacity: 0.226;
+		}
+	}
+
+	@keyframes spotlight-wobble-1 {
+		0% {
+			background-image: radial-gradient(90% 86% at 50% 0%, transparent 0%, var(--layer-0) 90%);
+		}
+		25% {
+			background-image: radial-gradient(90% 86% at 48% 2%, transparent 0%, var(--layer-0) 90%);
+		}
+		50% {
+			background-image: radial-gradient(90% 86% at 52% 3%, transparent 0%, var(--layer-0) 90%);
+		}
+		75% {
+			background-image: radial-gradient(90% 86% at 48% 1%, transparent 0%, var(--layer-0) 90%);
+		}
+		100% {
+			background-image: radial-gradient(90% 86% at 50% 0%, transparent 0%, var(--layer-0) 90%);
+		}
+	}
+
+	@keyframes spotlight-wobble-2 {
+		0% {
+			background-image: radial-gradient(90% 86% at 50% 0%, transparent 0%, var(--layer-0) 68.4%);
+		}
+		25% {
+			background-image: radial-gradient(90% 86% at 51% 3%, transparent 0%, var(--layer-0) 68.4%);
+		}
+		50% {
+			background-image: radial-gradient(90% 86% at 49% 2%, transparent 0%, var(--layer-0) 68.4%);
+		}
+		75% {
+			background-image: radial-gradient(90% 86% at 52% 1%, transparent 0%, var(--layer-0) 68.4%);
+		}
+		100% {
+			background-image: radial-gradient(90% 86% at 50% 0%, transparent 0%, var(--layer-0) 68.4%);
+		}
+	}
+
+	@keyframes spotlight-wobble-3 {
+		0% {
+			background-image: radial-gradient(90% 86% at 50% 0%, transparent 0%, var(--layer-0) 38.4%);
+		}
+		25% {
+			background-image: radial-gradient(90% 86% at 49% 1%, transparent 0%, var(--layer-0) 38.4%);
+		}
+		50% {
+			background-image: radial-gradient(90% 86% at 51% 2%, transparent 0%, var(--layer-0) 38.4%);
+		}
+		75% {
+			background-image: radial-gradient(90% 86% at 48% 1%, transparent 0%, var(--layer-0) 38.4%);
+		}
+		100% {
+			background-image: radial-gradient(90% 86% at 50% 0%, transparent 0%, var(--layer-0) 38.4%);
+		}
+	}
 }

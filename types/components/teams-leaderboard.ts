@@ -1,4 +1,4 @@
-import { PlayersResponse } from "@/types/api/player";
+import { PlayersResponse } from "@/types";
 
 export interface TeamScore {
 	owner: string;

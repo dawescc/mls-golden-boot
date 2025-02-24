@@ -1,133 +1,22 @@
 "use client";
 
-import { getLiveScores } from "@/actions/getLiveScores";
+import { getPastScores } from "@/actions/getPastScores";
 import { useCallback, useEffect, useState } from "react";
 import { Drawer, Handle } from "vaul";
 import { cn } from "@/utils/cn";
 import Image from "next/image";
-import { LiveScoreCardProps, LiveScoreDetailsProps, LiveScoresResponse } from "@/types";
+import { PastScoreCardProps, PastScoreDetailsProps, PastScoresResponse } from "@/types";
 import { tz } from "@/utils/tz";
-import { GiSoccerBall, GiWhistle } from "react-icons/gi";
-import { ImCross } from "react-icons/im";
-import { GrFlagFill } from "react-icons/gr";
-import { BsCaretLeftFill, BsCaretRightFill } from "react-icons/bs";
 
-const POLLING_INTERVALS = {
-	MATCH_IN_PROGRESS: 60000, // 1m
-	MATCH_OTHER_LIVE: 120000, // 2m
-	NO_MATCHES: 300000, // 5m
-} as const;
-
-function getEventDisplay(type: string, detail: string): React.ReactNode {
-	const t = type.toLowerCase();
-	const d = detail.toLowerCase();
-
-	if (t === "goal") {
-		switch (d) {
-			case "own goal":
-				return (
-					<span className='font-bold flex items-center gap-2'>
-						<GiSoccerBall className='inline size-[1.175rem]' /> OG
-					</span>
-				);
-			case "penalty":
-				return (
-					<span className='font-bold flex items-center gap-2'>
-						<GiSoccerBall className='inline size-[1.175rem]' /> PEN
-					</span>
-				);
-			case "missed penalty":
-				return (
-					<span className='font-bold flex items-center gap-2'>
-						<ImCross className='inline size-[1.05rem]' /> PEN MISS
-					</span>
-				);
-			default:
-				return (
-					<span className='font-bold flex items-center gap-2'>
-						<GiSoccerBall className='inline size-[1.175rem]' />
-					</span>
-				);
-		}
-	}
-
-	if (t === "card") {
-		switch (d) {
-			case "yellow card":
-				return <div className='size-3 scale-y-125 -scale-x-95 bg-yellow-300 rounded-sm'></div>;
-			case "red card":
-				return <div className='size-3 scale-y-125 -scale-x-95 bg-red-400 rounded-sm'></div>;
-			default:
-				return "?";
-		}
-	}
-
-	if (t === "var") {
-		if (d.includes("goal") && d.includes("disallowed")) {
-			return (
-				<span className='flex items-center gap-2'>
-					<GiSoccerBall className='inline size-[1.175rem]' />
-
-					<span className='font-bold text-xs px-2 py-1 border border-layer-5/70 ring ring-inset ring-layer-5/20 rounded-md bg-layer-2 flex items-center gap-1'>
-						<ImCross className='inline size-[1em] mb-[1px] text-red-400' />
-						VAR
-					</span>
-					{d.includes("offside") ? (
-						<span className='text-sm text-accent'>
-							<GrFlagFill className='inline text-orange-400' />
-						</span>
-					) : null}
-					{d.includes("foul") ? (
-						<span className='text-sm text-accent'>
-							<GiWhistle className='inline' />
-						</span>
-					) : null}
-				</span>
-			);
-		} else return <span className='font-bold flex items-center gap-2'>{t}</span>;
-	}
-
-	if (t === "subst") {
-		const substNumber = parseInt(d.match(/\d+/)?.[0] || "0");
-
-		if (substNumber % 2 === 0) {
-			return (
-				<span className='font-bold flex items-center gap-2'>
-					<BsCaretLeftFill className='inline size-[1.175rem] text-red-400' />
-				</span>
-			);
-		} else {
-			return (
-				<span className='font-bold flex items-center gap-2'>
-					<BsCaretRightFill className='inline size-[1.175rem] text-green-400' />
-				</span>
-			);
-		}
-	}
-
-	return "?";
-}
-
-const getMatchStatus = (scores: LiveScoresResponse[]) => {
-	if (scores.length === 0) return "NO_MATCHES";
-
-	const hasActiveMatch = scores.some((match) => {
-		const status = match.fixture.status.short;
-		return status === "1H" || status === "2H" || status === "HT";
-	});
-
-	return hasActiveMatch ? "MATCH_IN_PROGRESS" : "MATCH_OTHER_LIVE";
-};
-
-const useLiveScores = () => {
-	const [scores, setScores] = useState<LiveScoresResponse[]>([]);
+const usePastScores = () => {
+	const [scores, setScores] = useState<PastScoresResponse[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState<Error | null>(null);
 	const [retryCount, setRetryCount] = useState(0);
 
-	const fetchWithRetry = useCallback(async (attempt = 0): Promise<LiveScoresResponse[]> => {
+	const fetchWithRetry = useCallback(async (attempt = 0): Promise<PastScoresResponse[]> => {
 		try {
-			const data = await getLiveScores();
+			const data = await getPastScores();
 			setRetryCount(0);
 			return data;
 		} catch (err) {
@@ -143,7 +32,6 @@ const useLiveScores = () => {
 
 	useEffect(() => {
 		let mounted = true;
-		let intervalId: NodeJS.Timeout;
 
 		const fetchScores = async () => {
 			let attempt = 0;
@@ -156,32 +44,13 @@ const useLiveScores = () => {
 					setScores(data);
 					setIsLoading(false);
 
-					const status = getMatchStatus(data);
-					const nextInterval = POLLING_INTERVALS[status];
-
-					clearInterval(intervalId);
-					intervalId = setInterval(fetchScores, nextInterval);
-
-					if (process.env.NODE_ENV === "development") {
-						console.groupCollapsed("\n\nSet Live Score Interval");
-						console.dir({
-							Interval: `${nextInterval / 1000}s · ${nextInterval / 1000 / 60}m · ${nextInterval}ms`,
-							Date: new Date().toLocaleString("en-US", {
-								timeZone: "America/New_York",
-								dateStyle: "medium",
-								timeStyle: "medium",
-							}),
-						});
-						console.groupEnd();
-					}
-
 					break;
 				} catch (err) {
 					attempt++;
 					if (attempt >= 3) {
 						if (!mounted) return;
 						console.error("Error fetching scores:", err);
-						setError(err instanceof Error ? err : new Error("Failed to fetch live scores"));
+						setError(err instanceof Error ? err : new Error("Failed to fetch past scores"));
 						setIsLoading(false);
 					}
 				}
@@ -192,7 +61,6 @@ const useLiveScores = () => {
 
 		return () => {
 			mounted = false;
-			clearInterval(intervalId);
 		};
 	}, [fetchWithRetry]);
 
@@ -254,7 +122,7 @@ const ScoreBoardEmpty = () => {
 	);
 };
 
-const ScoreCard = ({ data, className }: LiveScoreCardProps) => {
+const ScoreCard = ({ data, className }: PastScoreCardProps) => {
 	return (
 		<div className={cn("layer-1-container p-4", className)}>
 			<div className='flex justify-between items-center'>
@@ -273,9 +141,7 @@ const ScoreCard = ({ data, className }: LiveScoreCardProps) => {
 						{data.goals.home} <span className='text-sm'>¤</span> {data.goals.away}
 					</span>
 					<div className='font-sans mt-2 text-sm text-accent'>
-						<span>
-							{data.fixture.status.elapsed}&apos; {data.fixture.status.extra && <span>+ {data.fixture.status.extra}</span>}
-						</span>
+						<span>{data.fixture.status.short}</span>
 					</div>
 				</div>
 				<div className='flex items-center gap-3'>
@@ -293,7 +159,7 @@ const ScoreCard = ({ data, className }: LiveScoreCardProps) => {
 	);
 };
 
-const LiveScoreDetails = ({ data }: LiveScoreDetailsProps) => {
+const PastScoreDetails = ({ data }: PastScoreDetailsProps) => {
 	return (
 		<div className='p-4'>
 			<div className=' flex flex-col gap-4'>
@@ -345,46 +211,13 @@ const LiveScoreDetails = ({ data }: LiveScoreDetailsProps) => {
 						<span className='text-right'>{data.fixture.referee ? data.fixture.referee : "N/A"}</span>
 					</div>
 				</div>
-
-				{/* Events */}
-				{!data.events ? null : (
-					<div className='flex flex-col gap-2'>
-						<h3 className='font-medium text-lg'>Match Events</h3>
-						{data.events.length < 1 ? (
-							<div className='layer-1-container p-4 flex flex-col gap-2'>
-								<p className='text-sm text-accent'>No events recorded.</p>
-							</div>
-						) : (
-							<div className='layer-1-container p-4 flex flex-col gap-2'>
-								{data.events.map((event, index) => (
-									<div
-										key={index}
-										className='border-b border-layer-5/40 p-3 flex items-center gap-3'>
-										<span className='font-mono text-accent'>{event.time.elapsed}&apos;</span>
-										<Image
-											src={event.team.logo}
-											alt={":)"}
-											width={"200"}
-											height={"200"}
-											className='aspect-square size-6'
-										/>
-										<span className='font-medium'>{event.player.name}</span>
-										{/* <span className='text-accent'>{event.type}</span>
-									<span className='text-accent'>{event.detail}</span> */}
-										<span className='font-medium'>{getEventDisplay(event.type, event.detail)}</span>
-									</div>
-								))}
-							</div>
-						)}
-					</div>
-				)}
 			</div>
 		</div>
 	);
 };
 
 const ScoreBoard = () => {
-	const { scores, isLoading, error, retryCount } = useLiveScores();
+	const { scores, isLoading, error, retryCount } = usePastScores();
 
 	if (error) {
 		return (
@@ -412,7 +245,7 @@ const ScoreBoard = () => {
 								</div>
 								<div className='pb-4 px-4 overflow-y-auto'>
 									<Drawer.Title className='hidden'>Match Details</Drawer.Title>
-									<LiveScoreDetails data={score} />
+									<PastScoreDetails data={score} />
 								</div>
 							</Drawer.Content>
 						</Drawer.Portal>

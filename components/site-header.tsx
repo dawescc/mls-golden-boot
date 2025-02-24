@@ -5,19 +5,20 @@ import { GBLogo } from "@/components/app-logo";
 
 export default function SiteHeader() {
 	return (
-		<header className='mb-20 grid grid-cols-1 place-items-center relative overflow-clip max-w-5xl mx-auto'>
-			<div className='py-6 z-[3]'>
+		<header className='mb-16 grid grid-cols-1 place-items-center relative overflow-clip max-w-5xl mx-auto'>
+			<div className='py-6 z-[3] translate-y-2'>
 				<Link
 					href='/'
 					className='w-fit'>
-					<MlsLogo />
+					<MlsLogo className='size-32' />
 				</Link>
 			</div>
 			<div>
-				<div className='absolute top-0 left-0 w-full h-full bg-[radial-gradient(90%_86%_at_top,transparent_0%,var(--layer-0)_90%)] z-[2]'></div>
-				<div className='absolute top-0 left-0 w-full h-full bg-[radial-gradient(90%_86%_at_top,transparent_0%,var(--layer-0)_68.4%)] z-[2] opacity-[0.226]'></div>
-				<div className='absolute top-0 left-0 w-full h-full bg-[radial-gradient(90%_86%_at_top,transparent_0%,var(--layer-0)_38.4%)] z-[1] opacity-[0.826]'></div>
-				<div className='absolute left-0 top-0 w-full translate-y-5 scale-y-[1.01] text-accent z-[0]'>
+				<div className='absolute top-0 left-0 w-full h-full z-[2] [animation:spotlight-wobble-1_6s_ease-in-out_infinite]'></div>
+				<div className='absolute top-0 left-0 w-full h-full backdrop-blur-[1px] z-[2] [animation:gradient-pulse_4s_ease-in-out_infinite,spotlight-wobble-2_6.5s_ease-in-out_infinite]'></div>
+				<div className='absolute top-0 left-0 w-full h-full z-[1] opacity-[0.826] [animation:spotlight-wobble-3_7s_ease-in-out_infinite]'></div>
+
+				<div className='absolute left-0 top-0 w-full translate-y-5 scale-y-[1.01] scale-x-[0.99] text-accent z-[0]'>
 					<GBLogo fill='currentColor' />
 				</div>
 				<div className='absolute left-0 top-0 w-full translate-y-5 text-layer-2 z-[1]'>
