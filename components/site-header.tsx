@@ -5,24 +5,27 @@ import { GBLogo } from "@/components/app-logo";
 
 export default function SiteHeader() {
 	return (
-		<header className='mb-16 grid grid-cols-1 place-items-center relative overflow-clip max-w-5xl mx-auto'>
+		<header className='mb-16 h-48 md:h-56 lg:h-64 grid grid-cols-1 place-items-center relative overflow-clip max-w-5xl mx-auto'>
 			<div className='py-6 z-[3] translate-y-2'>
 				<Link
 					href='/'
 					className='w-fit'>
-					<MlsLogo className='size-32' />
+					<MlsLogo className='size-36' />
 				</Link>
 			</div>
 			<div>
-				<div className='absolute top-0 left-0 w-full h-full z-[2] [animation:spotlight-wobble-1_6s_ease-in-out_infinite]'></div>
-				<div className='absolute top-0 left-0 w-full h-full backdrop-blur-[1px] z-[2] [animation:gradient-pulse_4s_ease-in-out_infinite,spotlight-wobble-2_6.5s_ease-in-out_infinite]'></div>
-				<div className='absolute top-0 left-0 w-full h-full z-[1] opacity-[0.826] [animation:spotlight-wobble-3_7s_ease-in-out_infinite]'></div>
-
-				<div className='absolute left-0 top-0 w-full translate-y-5 scale-y-[1.01] scale-x-[0.99] text-accent z-[0]'>
-					<GBLogo fill='currentColor' />
+				<div className='z-[2] absolute top-0 left-0 w-full h-full'>
+					<div className='w-full spotlight-wobble-slow [animation-duration:9.33s] z-[2]'></div>
+					<div className='translate-y-6 text-layer-1 opacity-[0.98] z-[1]'>
+						<GBLogo fill='currentColor' />
+					</div>
 				</div>
-				<div className='absolute left-0 top-0 w-full translate-y-5 text-layer-2 z-[1]'>
-					<GBLogo fill='currentColor' />
+
+				<div className='z-[1] absolute top-0 left-0 w-full h-full'>
+					<div className='w-full spotlight-wobble [animation-duration:4.65s] z-[2]'></div>
+					<div className='translate-y-6 scale-y-[0.989] scale-x-[0.997] text-accent z-[1]'>
+						<GBLogo fill='currentColor' />
+					</div>
 				</div>
 			</div>
 		</header>
