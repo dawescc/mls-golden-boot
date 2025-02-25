@@ -15,14 +15,14 @@ export default function SiteHeader() {
 			</div>
 			<div>
 				<div className='z-[2] absolute top-0 left-0 w-full h-full'>
-					<div className='w-full spotlight-wobble-slow [animation-duration:9.33s] z-[2]'></div>
-					<div className='translate-y-6 text-layer-1 opacity-[0.98] z-[1]'>
+					<div className='w-full spotlight-wobble-1 [animation-duration:11.5s] z-[2]'></div>
+					<div className='translate-y-6 text-[var(--hero-txt)] opacity-[0.98] z-[1]'>
 						<GBLogo fill='currentColor' />
 					</div>
 				</div>
 
 				<div className='z-[1] absolute top-0 left-0 w-full h-full'>
-					<div className='w-full spotlight-wobble [animation-duration:4.65s] z-[2]'></div>
+					<div className='w-full spotlight-wobble-0 [animation-duration:11s] z-[2]'></div>
 					<div className='translate-y-6 scale-y-[0.989] scale-x-[0.997] text-accent z-[1]'>
 						<GBLogo fill='currentColor' />
 					</div>
@@ -35,6 +35,7 @@ export default function SiteHeader() {
 const MlsLogo = ({ className = "" }: { className?: string }) => {
 	return (
 		<div className={cn("aspect-square h-full my-auto size-28 overflow-clip", className)}>
+			{/* FUTURE <Hero imageId={process.env.NEXT_PUBLIC_LEAGUE || "253"} /> */}
 			<Hero imageId={"mls"} />
 		</div>
 	);

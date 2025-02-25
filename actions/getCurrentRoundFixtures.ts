@@ -1,7 +1,8 @@
 "use server";
 
-import { ApiResponse, PastScoresResponse, RoundResponse } from "@/types";
+import { ApiResponse, FixturesByRoundResponse, RoundResponse } from "@/types";
 import fd from "@/utils/fd";
+import { delay } from "@/lib/fn";
 import { cache } from "react";
 
 export const getCurrentRound = cache(async () => {
@@ -31,12 +32,11 @@ export const getCurrentRound = cache(async () => {
 	}
 });
 
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-export const getPastScores = cache(async () => {
+export const getFixturesForCurrentRound = cache(async () => {
 	await delay(5000);
 	const round = await getCurrentRound();
 	try {
-		const data = await fd<ApiResponse<PastScoresResponse>>({
+		const data = await fd<ApiResponse<FixturesByRoundResponse>>({
 			url: `${process.env.NEXT_PUBLIC_API_URL}/fixtures`,
 			headers: {
 				"x-rapidapi-key": process.env.X_RAPIDAPI_KEY || "",

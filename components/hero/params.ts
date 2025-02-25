@@ -12,37 +12,37 @@ export const params = {
 		min: 0,
 		max: 0.06,
 		step: 0.001,
-		default: 0.025,
+		default: 0.0165,
 	},
 	edge: {
 		min: 0,
 		max: 1,
 		step: 0.01,
-		default: 0.2,
+		default: 1,
 	},
 	patternBlur: {
 		min: 0,
 		max: 0.05,
 		step: 0.001,
-		default: 0.005,
+		default: 0.0125,
 	},
 	liquid: {
 		min: 0,
 		max: 1,
 		step: 0.01,
-		default: 0.147,
+		default: 1,
 	},
 	speed: {
 		min: 0,
 		max: 1,
 		step: 0.01,
-		default: 0.243,
+		default: 0.063,
 	},
 	patternScale: {
 		min: 1,
 		max: 10,
 		step: 0.1,
-		default: 2,
+		default: 1.87233,
 	},
 };
 

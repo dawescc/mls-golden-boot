@@ -8,6 +8,7 @@
 		--border-radius: 0.9423466667rem;
 		--background: rgb(255, 255, 255);
 		--foreground: rgb(0, 0, 0);
+		--hero-txt: rgb(242, 242, 242);
 
 		--border: var(--foreground);
 		--primary: rgb(224, 35, 26);
@@ -26,6 +27,7 @@
 		--background: rgb(0, 0, 0);
 		--foreground: rgb(255, 255, 255);
 		--accent: rgb(176, 176, 176);
+		--hero-txt: rgb(17, 17, 17);
 
 		--layer-1: rgb(19, 19, 19);
 		--layer-2: rgb(38, 38, 38);
@@ -55,70 +57,82 @@
 		@apply bg-gradient-to-t from-layer-0 to-layer-1 rounded relative shadow-sm border border-layer-5/50;
 	}
 
-	@keyframes spotlight-wobble {
-		0% {
-			--x: 10%;
-			--y: 30%;
-		}
-		50% {
-			--x: 90%;
-			--y: 55%;
-		}
-		100% {
-			--x: 10%;
-			--y: 30%;
-		}
-	}
-
-	@keyframes spotlight-wobble-slow {
-		0% {
-			--h: 40%;
-			--w: 40%;
-		}
-		50% {
-			--h: 90%;
-			--w: 80%;
-		}
-		100% {
-			--h: 40%;
-			--w: 40%;
-		}
-	}
-
-	@property --x {
+	@property --h0 {
 		syntax: "<percentage>";
 		inherits: false;
 		initial-value: 100%;
 	}
 
-	@property --y {
+	@property --w0 {
 		syntax: "<percentage>";
 		inherits: false;
 		initial-value: 100%;
 	}
-	.spotlight-wobble {
+
+	@property --h1 {
+		syntax: "<percentage>";
+		inherits: false;
+		initial-value: 100%;
+	}
+
+	@property --w1 {
+		syntax: "<percentage>";
+		inherits: false;
+		initial-value: 100%;
+	}
+
+	@property --b1 {
+		syntax: "<length>";
+		inherits: false;
+		initial-value: 1px;
+	}
+
+	@keyframes spotlight-wobble-0 {
+		0% {
+			--h0: 20%;
+			--w0: 20%;
+		}
+		50% {
+			--h0: 70%;
+			--w0: 80%;
+		}
+		100% {
+			--h0: 20%;
+			--w0: 20%;
+		}
+	}
+
+	@keyframes spotlight-wobble-1 {
+		0% {
+			--h1: 40%;
+			--w1: 40%;
+			--b1: 1px;
+		}
+		50% {
+			--h1: 90%;
+			--w1: 90%;
+			--b1: 0px;
+		}
+		100% {
+			--h1: 40%;
+			--w1: 40%;
+			--b1: 1px;
+		}
+	}
+
+	.spotlight-wobble-0 {
 		--x: 50%;
 		--y: 50%;
-		background: radial-gradient(circle at var(--x) var(--y), transparent 10%, var(--layer-0) 80%) center no-repeat;
+		background: radial-gradient(var(--w0) var(--h0) at center, transparent 10%, var(--layer-0) 80%) center no-repeat;
 		@apply absolute top-0 left-0 w-full h-full;
-		@apply [animation:spotlight-wobble_4s_cubic-bezier(0.42,0,0.58,1)_infinite];
-	}
-	@property --h {
-		syntax: "<percentage>";
-		inherits: false;
-		initial-value: 100%;
+		animation: spotlight-wobble-0 8s cubic-bezier(0.42, 0, 0.58, 1) infinite;
 	}
 
-	@property --w {
-		syntax: "<percentage>";
-		inherits: false;
-		initial-value: 100%;
-	}
-	.spotlight-wobble-slow {
+	.spotlight-wobble-1 {
 		--h: 50%;
 		--w: 50%;
-		background: radial-gradient(var(--w) var(--h) at center, transparent 10%, var(--layer-0) 90%) center no-repeat;
-		@apply absolute top-0 left-0 w-full h-full;
-		@apply [animation:spotlight-wobble-slow_8s_cubic-bezier(0.42,0,.58,1)_infinite];
+		background: radial-gradient(var(--w1) var(--h1) at center, transparent 10%, var(--layer-0) 90%) center no-repeat;
+		@apply absolute top-0 left-0 w-full h-full backdrop-blur-[var(--b1)];
+		animation: spotlight-wobble-1 8s cubic-bezier(0.42, 0, 0.58, 1) infinite;
 	}
 }

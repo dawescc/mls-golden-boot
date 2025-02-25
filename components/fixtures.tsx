@@ -1,22 +1,26 @@
 "use client";
 
-import { getPastScores } from "@/actions/getPastScores";
+import { getFixturesForCurrentRound } from "@/actions/getCurrentRoundFixtures";
 import { useCallback, useEffect, useState } from "react";
 import { Drawer, Handle } from "vaul";
 import { cn } from "@/utils/cn";
 import Image from "next/image";
-import { PastScoreCardProps, PastScoreDetailsProps, PastScoresResponse } from "@/types";
+import { FixtureCardProps, FixturesDetailsProps, FixturesByRoundResponse, MatchInfoResponse } from "@/types";
 import { tz } from "@/utils/tz";
+import { getMatchInfo } from "@/actions/getMatchInfo";
+import { getFullTimeEventDisplay } from "@/components/live-scoreboard";
+import { Spinner } from "@/components/ui/(spinner)/spinner";
+import { AiOutlineDoubleLeft } from "react-icons/ai";
 
-const usePastScores = () => {
-	const [scores, setScores] = useState<PastScoresResponse[]>([]);
+const useGetCurrentRoundFixtures = () => {
+	const [scores, setScores] = useState<FixturesByRoundResponse[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState<Error | null>(null);
 	const [retryCount, setRetryCount] = useState(0);
 
-	const fetchWithRetry = useCallback(async (attempt = 0): Promise<PastScoresResponse[]> => {
+	const fetchWithRetry = useCallback(async (attempt = 0): Promise<FixturesByRoundResponse[]> => {
 		try {
-			const data = await getPastScores();
+			const data = await getFixturesForCurrentRound();
 			setRetryCount(0);
 			return data;
 		} catch (err) {
@@ -122,7 +126,7 @@ const ScoreBoardEmpty = () => {
 	);
 };
 
-const ScoreCard = ({ data, className }: PastScoreCardProps) => {
+const ScoreCard = ({ data, className }: FixtureCardProps) => {
 	return (
 		<div className={cn("layer-1-container p-4", className)}>
 			<div className='flex justify-between items-center'>
@@ -137,11 +141,15 @@ const ScoreCard = ({ data, className }: PastScoreCardProps) => {
 					<span className='hidden md:inline font-medium text-2xl w-[12ch] text-left'>{data.teams.home.name}</span>
 				</div>
 				<div className='font-mono font-bold text-2xl flex flex-col justify-center items-center'>
-					<span>
-						{data.goals.home} <span className='text-sm'>¤</span> {data.goals.away}
-					</span>
-					<div className='font-sans mt-2 text-sm text-accent'>
-						<span>{data.fixture.status.short}</span>
+					{!data.goals.home || !data.goals.away ? (
+						<div></div>
+					) : (
+						<span>
+							{data.goals.home} <span className='text-sm'>¤</span> {data.goals.away}
+						</span>
+					)}
+					<div className='font-sans text-sm'>
+						{data.fixture.status.short === "NS" ? <span>{tz(data.fixture.date)}</span> : <span>{data.fixture.status.short}</span>}
 					</div>
 				</div>
 				<div className='flex items-center gap-3'>
@@ -159,7 +167,7 @@ const ScoreCard = ({ data, className }: PastScoreCardProps) => {
 	);
 };
 
-const PastScoreDetails = ({ data }: PastScoreDetailsProps) => {
+const FixtureDetails = ({ data }: FixturesDetailsProps) => {
 	return (
 		<div className='p-4'>
 			<div className=' flex flex-col gap-4'>
@@ -211,13 +219,115 @@ const PastScoreDetails = ({ data }: PastScoreDetailsProps) => {
 						<span className='text-right'>{data.fixture.referee ? data.fixture.referee : "N/A"}</span>
 					</div>
 				</div>
+
+				{data.fixture.status.short === "FT" ? <FullTimeDetails matchId={data.fixture.id} /> : null}
 			</div>
 		</div>
 	);
 };
 
+const FullTimeDetails = ({ matchId }: { matchId: number }) => {
+	const [matchInfo, setMatchInfo] = useState<MatchInfoResponse | null>(null);
+	const [isLoading, setIsLoading] = useState(true);
+
+	useEffect(() => {
+		const fetchMatchInfo = async () => {
+			try {
+				const info = await getMatchInfo(matchId);
+				setMatchInfo(info[0]);
+			} catch (error) {
+				console.error("Error fetching match info:", error);
+			} finally {
+				setIsLoading(false);
+			}
+		};
+		fetchMatchInfo();
+	}, [matchId]);
+
+	if (isLoading) {
+		return (
+			<div className='layer-1-container p-4'>
+				<span className='inline-flex items-center gap-[1ch]'>
+					<Spinner /> Loading details
+				</span>
+			</div>
+		);
+	}
+
+	if (!matchInfo) return null;
+
+	return (
+		<div className='flex flex-col gap-4'>
+			{/* Score Breakdown */}
+			<h3 className='font-medium text-lg -mb-2'>Score Details {matchInfo.fixture.id}</h3>
+			<div className='layer-1-container p-4 flex flex-col gap-2'>
+				{matchInfo.score.halftime.home !== null && (
+					<div className='flex justify-between text-accent'>
+						<span className='font-medium'>Half Time</span>
+						<span>
+							{matchInfo.score.halftime.home} - {matchInfo.score.halftime.away}
+						</span>
+					</div>
+				)}
+				{matchInfo.score.extratime.home !== null && (
+					<div className='flex justify-between text-accent'>
+						<span className='font-medium'>Extra Time</span>
+						<span>
+							{matchInfo.score.extratime.home} - {matchInfo.score.extratime.away}
+						</span>
+					</div>
+				)}
+				{matchInfo.score.penalty.home !== null && (
+					<div className='flex justify-between text-accent'>
+						<span className='font-medium'>Penalties</span>
+						<span>
+							{matchInfo.score.penalty.home} - {matchInfo.score.penalty.away}
+						</span>
+					</div>
+				)}
+			</div>
+
+			{/* Match Events */}
+			{matchInfo.events && matchInfo.events.length > 0 && (
+				<div className='flex flex-col gap-2'>
+					<h3 className='font-medium text-lg'>Match Events</h3>
+					<div className='layer-1-container p-4 flex flex-col'>
+						{matchInfo.events.map((event, index) => (
+							<div
+								key={index}
+								className='border-b border-layer-5/40 p-3 flex items-center gap-3'>
+								<span className='font-mono text-accent'>
+									{event.time.elapsed}&apos;
+									{event.time.extra && `+${event.time.extra}`}
+								</span>
+								<Image
+									src={event.team.logo}
+									alt={event.team.name}
+									width={"200"}
+									height={"200"}
+									className='aspect-square size-6'
+								/>
+								<span className={`font-medium ${event.type.toLowerCase() === "subst" ? "text-accent" : null}`}>
+									{event.player.name?.replace(/[0-9]/g, "")}
+								</span>
+								<span className='font-medium'>{getFullTimeEventDisplay(event.type, event.detail, event.assist)}</span>
+								{event.assist.name && event.type.toLowerCase() === "goal" && (
+									<>
+										<AiOutlineDoubleLeft className='inline size-[1.175rem] text-accent' />
+										<span className='text-accent font-medium'>{event.assist.name}</span>
+									</>
+								)}
+							</div>
+						))}
+					</div>
+				</div>
+			)}
+		</div>
+	);
+};
+
 const ScoreBoard = () => {
-	const { scores, isLoading, error, retryCount } = usePastScores();
+	const { scores, isLoading, error, retryCount } = useGetCurrentRoundFixtures();
 
 	if (error) {
 		return (
@@ -245,7 +355,7 @@ const ScoreBoard = () => {
 								</div>
 								<div className='pb-4 px-4 overflow-y-auto'>
 									<Drawer.Title className='hidden'>Match Details</Drawer.Title>
-									<PastScoreDetails data={score} />
+									<FixtureDetails data={score} />
 								</div>
 							</Drawer.Content>
 						</Drawer.Portal>

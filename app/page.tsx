@@ -2,12 +2,15 @@ import { LeaderboardDetailsDrawer } from "@/components/teams-leaderboard";
 import fd from "@/utils/fd";
 import { TopScorersResponse, ApiResponse } from "@/types";
 import { ScoreBoard } from "@/components/live-scoreboard";
-import { ScoreBoard as PastScoreBoard } from "@/components/past-scoreboard";
+import { ScoreBoard as PastScoreBoard } from "@/components/fixtures";
 import { TopScorersListError, TopScorersList, TopScorersListEmpty } from "@/components/top-scorers";
+import { getCurrentRound } from "@/actions/getCurrentRoundFixtures";
 
 export default async function Page() {
 	const season = process.env.NEXT_PUBLIC_SEASON || "2024";
 	const league = process.env.NEXT_PUBLIC_LEAGUE || "253";
+	const round = await getCurrentRound();
+	const [weekType, weekNum] = round[0].toString().split(/\s*-\s*/);
 	try {
 		const data = await fd<ApiResponse<TopScorersResponse>>({
 			url: `${process.env.NEXT_PUBLIC_API_URL}/players/topscorers`,
@@ -35,7 +38,9 @@ export default async function Page() {
 					<ScoreBoard />
 				</div>
 
-				<h1 className='text-xl font-medium text-accent'>Results</h1>
+				<h1 className='text-xl font-medium text-accent'>
+					{weekType} Week {weekNum}
+				</h1>
 				<div className='mb-10 w-full mt-4'>
 					<PastScoreBoard />
 				</div>

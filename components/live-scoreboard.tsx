@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Drawer, Handle } from "vaul";
 import { cn } from "@/utils/cn";
 import Image from "next/image";
-import { LiveScoreCardProps, LiveScoreDetailsProps, LiveScoresResponse } from "@/types";
+import { EventParticipant, LiveScoreCardProps, LiveScoreDetailsProps, LiveScoresResponse } from "@/types";
 import { tz } from "@/utils/tz";
 import { GiSoccerBall, GiWhistle } from "react-icons/gi";
 import { ImCross } from "react-icons/im";
@@ -18,7 +18,7 @@ const POLLING_INTERVALS = {
 	NO_MATCHES: 300000, // 5m
 } as const;
 
-function getEventDisplay(type: string, detail: string): React.ReactNode {
+export function getEventDisplay(type: string, detail: string): React.ReactNode {
 	const t = type.toLowerCase();
 	const d = detail.toLowerCase();
 
@@ -33,7 +33,10 @@ function getEventDisplay(type: string, detail: string): React.ReactNode {
 			case "penalty":
 				return (
 					<span className='font-bold flex items-center gap-2'>
-						<GiSoccerBall className='inline size-[1.175rem]' /> PEN
+						<GiSoccerBall className='inline size-[1.175rem]' />{" "}
+						<span className='font-bold text-xs px-2 py-1 border border-layer-5/70 ring ring-inset ring-layer-5/20 rounded-md bg-layer-2 flex items-center gap-1'>
+							PEN
+						</span>
 					</span>
 				);
 			case "missed penalty":
@@ -106,6 +109,21 @@ function getEventDisplay(type: string, detail: string): React.ReactNode {
 	}
 
 	return "?";
+}
+
+export function getFullTimeEventDisplay(type: string, detail: string, assist?: EventParticipant): React.ReactNode {
+	const t = type.toLowerCase();
+	const d = detail.toLowerCase();
+	if (t === "subst") {
+		return (
+			<span className='font-bold flex items-center gap-2'>
+				<BsCaretLeftFill className='inline size-[1.175rem] text-red-400' />
+				<BsCaretRightFill className='inline size-[1.175rem] text-green-400' />
+				<span className='font-medium'>{assist?.name}</span>
+			</span>
+		);
+	}
+	return getEventDisplay(t, d);
 }
 
 const getMatchStatus = (scores: LiveScoresResponse[]) => {

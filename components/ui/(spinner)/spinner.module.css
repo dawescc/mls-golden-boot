@@ -1,0 +1,41 @@
+@keyframes spinner-spoke {
+	0% {
+		opacity: 1;
+	}
+	8.33% {
+		opacity: 0.8;
+	}
+	16.66% {
+		opacity: 0.8;
+	}
+	25% {
+		opacity: 0.8;
+	}
+	33.33% {
+		opacity: 0.6;
+	}
+	41.66% {
+		opacity: 0.6;
+	}
+	50% {
+		opacity: 0.6;
+	}
+	58.33% {
+		opacity: 0.4;
+	}
+	66.66% {
+		opacity: 0.4;
+	}
+	75% {
+		opacity: 0.4;
+	}
+	83.33% {
+		opacity: 0.2;
+	}
+	91.66% {
+		opacity: 0.2;
+	}
+	100% {
+		opacity: 0.2;
+	}
+}

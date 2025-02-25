@@ -21,6 +21,7 @@ export function Hero({ imageId }: HeroProps) {
 		async function updateImageData() {
 			try {
 				const res = await fetch(`img/${imageId}.png`);
+				//const res = await fetch(`https://media.api-sports.io/football/leagues/${imageId}.png`);
 				const blob = await res.blob();
 				const bitmap = await createImageBitmap(blob);
 
