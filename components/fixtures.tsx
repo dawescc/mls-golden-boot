@@ -294,7 +294,7 @@ const FullTimeDetails = ({ matchId }: { matchId: number }) => {
 						{matchInfo.events.map((event, index) => (
 							<div
 								key={index}
-								className='border-b border-layer-5/40 p-3 flex items-center gap-3'>
+								className='border-b border-layer-5/40 [&:last-of-type]:border-b-0 p-3 flex items-center gap-3'>
 								<span className='font-mono text-accent'>
 									{event.time.elapsed}&apos;
 									{event.time.extra && `+${event.time.extra}`}
