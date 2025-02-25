@@ -141,13 +141,12 @@ const ScoreCard = ({ data, className }: FixtureCardProps) => {
 					<span className='hidden md:inline font-medium text-2xl w-[12ch] text-left'>{data.teams.home.name}</span>
 				</div>
 				<div className='font-mono font-bold text-2xl flex flex-col justify-center items-center'>
-					{!data.goals.home || !data.goals.away ? (
-						<div></div>
-					) : (
+					{data.goals.home != null && data.goals.away != null ? (
 						<span>
 							{data.goals.home} <span className='text-sm'>¤</span> {data.goals.away}
 						</span>
-					)}
+					) : null}
+
 					<div className='font-sans text-sm'>
 						{data.fixture.status.short === "NS" ? <span>{tz(data.fixture.date)}</span> : <span>{data.fixture.status.short}</span>}
 					</div>
@@ -259,7 +258,7 @@ const FullTimeDetails = ({ matchId }: { matchId: number }) => {
 	return (
 		<div className='flex flex-col gap-4'>
 			{/* Score Breakdown */}
-			<h3 className='font-medium text-lg -mb-2'>Score Details {matchInfo.fixture.id}</h3>
+			<h3 className='font-medium text-lg -mb-2'>Score Details</h3>
 			<div className='layer-1-container p-4 flex flex-col gap-2'>
 				{matchInfo.score.halftime.home !== null && (
 					<div className='flex justify-between text-accent'>
