@@ -11,6 +11,7 @@ import { GiSoccerBall, GiWhistle } from "react-icons/gi";
 import { ImCross } from "react-icons/im";
 import { GrFlagFill } from "react-icons/gr";
 import { BsCaretLeftFill, BsCaretRightFill } from "react-icons/bs";
+import { AiOutlineDoubleLeft } from "react-icons/ai";
 
 const POLLING_INTERVALS = {
 	MATCH_IN_PROGRESS: 60000, // 1m
@@ -18,7 +19,7 @@ const POLLING_INTERVALS = {
 	NO_MATCHES: 300000, // 5m
 } as const;
 
-export function getEventDisplay(type: string, detail: string): React.ReactNode {
+export function getEventDisplay(type: string, detail: string, assist?: EventParticipant): React.ReactNode {
 	const t = type.toLowerCase();
 	const d = detail.toLowerCase();
 
@@ -91,21 +92,13 @@ export function getEventDisplay(type: string, detail: string): React.ReactNode {
 	}
 
 	if (t === "subst") {
-		const substNumber = parseInt(d.match(/\d+/)?.[0] || "0");
-
-		if (substNumber % 2 === 0) {
-			return (
-				<span className='font-bold flex items-center gap-2'>
-					<BsCaretLeftFill className='inline size-[1.175rem] text-red-400' />
-				</span>
-			);
-		} else {
-			return (
-				<span className='font-bold flex items-center gap-2'>
-					<BsCaretRightFill className='inline size-[1.175rem] text-green-400' />
-				</span>
-			);
-		}
+		return (
+			<span className='font-bold flex items-center gap-2'>
+				<BsCaretRightFill className='inline size-[1.175rem] text-green-400' />
+				<BsCaretLeftFill className='inline size-[1.175rem] text-red-400' />
+				<span className='font-medium text-accent'>{assist?.name}</span>
+			</span>
+		);
 	}
 
 	return "?";
@@ -386,10 +379,14 @@ const LiveScoreDetails = ({ data }: LiveScoreDetailsProps) => {
 											height={"200"}
 											className='aspect-square size-6'
 										/>
-										<span className='font-medium'>{event.player.name}</span>
-										{/* <span className='text-accent'>{event.type}</span>
-									<span className='text-accent'>{event.detail}</span> */}
-										<span className='font-medium'>{getEventDisplay(event.type, event.detail)}</span>
+										<span className={`font-medium`}>{event.player.name?.replace(/[0-9]/g, "")}</span>
+										<span className='font-medium'>{getEventDisplay(event.type, event.detail, event.assist)}</span>
+										{event.assist.name && event.type.toLowerCase() === "goal" && (
+											<>
+												<AiOutlineDoubleLeft className='inline size-[1.175rem] text-accent' />
+												<span className='text-accent font-medium'>{event.assist.name}</span>
+											</>
+										)}
 									</div>
 								))}
 							</div>
